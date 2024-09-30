@@ -39,7 +39,7 @@ struct EventForm: View {
             title = "Edit \(event.name)"
             _name = .init(initialValue: event.name)
             _note = .init(initialValue: event.note)
-            _date = .init(initialValue: event.date)
+            _date = .init(initialValue: event.date.convertToDate)
             _location = .init(initialValue: event.location)
             _transitionFromPrevious = .init(initialValue: event.transitionFromPrevious)
         }

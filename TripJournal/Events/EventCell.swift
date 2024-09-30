@@ -54,7 +54,7 @@ struct EventCell: View {
 
     var title: some View {
         VStack(alignment: .center, spacing: 5) {
-            Text(event.date, style: .date)
+            Text(event.date.convertToDate, style: .date)
                 .font(.caption)
                 .fontWidth(.condensed)
 

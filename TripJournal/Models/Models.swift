@@ -34,7 +34,7 @@ struct Event: Identifiable, Sendable, Hashable, Decodable {
     var id: Int
     var name: String
     var note: String?
-    var date: Date
+    var date: String
     var location: Location?
     var medias: [Media]
     var transitionFromPrevious: String?
