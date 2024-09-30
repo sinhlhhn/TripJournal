@@ -1,32 +1,32 @@
 import Foundation
 
-struct AuthRequest: Codable {
+struct AuthRequest: Encodable {
     let username: String
     let password: String
 }
 
 /// An object that can be used to create a new trip.
-struct TripCreate: Codable {
+struct TripCreate: Encodable {
     let name: String
     let startDate: Date
     let endDate: Date
 }
 
 /// An object that can be used to update an existing trip.
-struct TripUpdate: Codable {
+struct TripUpdate: Encodable {
     let name: String
     let startDate: Date
     let endDate: Date
 }
 
 /// An object that can be used to create a media.
-struct MediaCreate: Codable {
+struct MediaCreate: Encodable {
     let eventId: Event.ID
     let base64Data: Data
 }
 
 /// An object that can be used to create a new event.
-struct EventCreate: Codable {
+struct EventCreate: Encodable {
     let tripId: Trip.ID
     let name: String
     let note: String?
@@ -36,7 +36,7 @@ struct EventCreate: Codable {
 }
 
 /// An object that can be used to update an existing event.
-struct EventUpdate: Codable {
+struct EventUpdate: Encodable {
     var name: String
     var note: String?
     var date: Date
