@@ -59,8 +59,15 @@ class JournalServiceImpl: JournalService {
     
     private func createLogInRequest(username: String, password: String) throws -> URLRequest {
         let url = URL(string: "\(localhost)/token")!
-        let body = AuthRequest(username: username, password: password)
-        return try createPostRequest(url, with: body)
+        let body = "grant_type=&username=\(username)&password=\(password)".data(using: .utf8)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.httpBody = body
+        request.allHTTPHeaderFields = ["Content-Type": "application/x-www-form-urlencoded"]
+        
+        request.debug()
+        
+        return request
     }
 
     //MARK: -Trip
