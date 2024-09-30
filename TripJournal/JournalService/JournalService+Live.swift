@@ -11,6 +11,7 @@ enum JournalServiceError: Error {
 /// An unimplemented version of the `JournalService`.
 class JournalServiceImpl: JournalService {
     
+    private let localhost = "http://localhost:8080"
     private let urlSession: URLSession
     @Published private var token: Token?
 
@@ -36,7 +37,7 @@ class JournalServiceImpl: JournalService {
     }
     
     private func createRegisterRequest(username: String, password: String) throws -> URLRequest {
-        let url = URL(string: "https://localhost:8080/register")!
+        let url = URL(string: "\(localhost)/register")!
         let body = AuthRequest(username: username, password: password)
         return try createPostRequest(url, with: body)
     }
@@ -57,7 +58,7 @@ class JournalServiceImpl: JournalService {
     }
     
     private func createLogInRequest(username: String, password: String) throws -> URLRequest {
-        let url = URL(string: "https://localhost:8080/token")!
+        let url = URL(string: "\(localhost)/token")!
         let body = AuthRequest(username: username, password: password)
         return try createPostRequest(url, with: body)
     }
@@ -71,12 +72,12 @@ class JournalServiceImpl: JournalService {
     }
     
     private func createTripRequest(trip: TripCreate) throws -> URLRequest {
-        let url = URL(string: "https://localhost:8080/trips")!
+        let url = URL(string: "\(localhost)/trips")!
         return try createPostRequest(url, with: trip)
     }
 
     func getTrips() async throws -> [Trip] {
-        let url = URL(string: "https://localhost:8080/trips")!
+        let url = URL(string: "\(localhost)/trips")!
         let request = try createGetRequest(url)
         
         let trips: [Trip] = try await performRequest(request)
@@ -92,7 +93,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func updateTrip(withId id: Trip.ID, and trip: TripUpdate) async throws -> Trip {
-        let url = URL(string: "https://localhost:8080/trips/\(id)")!
+        let url = URL(string: "\(localhost)/trips/\(id)")!
         let data = try JSONEncoder().encode(trip)
         let request = try createPutRequest(url, with: data)
         
@@ -101,7 +102,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func deleteTrip(withId id: Trip.ID) async throws {
-        let url = URL(string: "https://localhost:8080/trips/\(id)")!
+        let url = URL(string: "\(localhost)/trips/\(id)")!
         let request = try createDeleteRequest(url)
         
         let _: String = try await performRequest(request)
@@ -109,7 +110,7 @@ class JournalServiceImpl: JournalService {
     
     //MARK: -Event
     func createEvent(with event: EventCreate) async throws -> Event {
-        let url = URL(string: "https://localhost:8080/events")!
+        let url = URL(string: "\(localhost)/events")!
         
         let request = try createPostRequest(url, with: event)
         
@@ -118,7 +119,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func updateEvent(withId id: Event.ID, and event: EventUpdate) async throws -> Event {
-        let url = URL(string: "https://localhost:8080/events/\(id)")!
+        let url = URL(string: "\(localhost)/events/\(id)")!
         let request = try createPutRequest(url, with: event)
         
         let event: Event = try await performRequest(request)
@@ -126,7 +127,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func deleteEvent(withId id: Event.ID) async throws {
-        let url = URL(string: "https://localhost:8080/events/\(id)")!
+        let url = URL(string: "\(localhost)/events/\(id)")!
         let request = try createDeleteRequest(url)
         
         let _: String = try await performRequest(request)
@@ -134,7 +135,7 @@ class JournalServiceImpl: JournalService {
 
     //MARK: -Media
     func createMedia(with media: MediaCreate) async throws -> Media {
-        let url = URL(string: "https://localhost:8080/media")!
+        let url = URL(string: "\(localhost)/media")!
         let request = try createPostRequest(url, with: media)
         
         let media: Media = try await performRequest(request)
@@ -142,7 +143,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func deleteMedia(withId id: Media.ID) async throws {
-        let url = URL(string: "https://localhost:8080/media/\(id)")!
+        let url = URL(string: "\(localhost)/media/\(id)")!
         let request = try createDeleteRequest(url)
         
         let _: String = try await performRequest(request)
