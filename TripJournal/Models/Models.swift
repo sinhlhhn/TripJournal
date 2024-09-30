@@ -16,9 +16,17 @@ struct Token: Codable {
 struct Trip: Identifiable, Sendable, Hashable, Decodable {
     var id: Int
     var name: String
-    var startDate: Date
-    var endDate: Date
+    var startDate: String
+    var endDate: String
     var events: [Event]
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case startDate = "start_date"
+        case endDate = "end_date"
+        case events
+    }
 }
 
 /// Represents an event in a trip.
@@ -30,6 +38,16 @@ struct Event: Identifiable, Sendable, Hashable, Decodable {
     var location: Location?
     var medias: [Media]
     var transitionFromPrevious: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case note
+        case date
+        case location
+        case medias
+        case transitionFromPrevious = "transition_from_previous"
+    }
 }
 
 /// Represents a location.
