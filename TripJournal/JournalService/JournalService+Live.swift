@@ -108,24 +108,44 @@ class JournalServiceImpl: JournalService {
     }
     
     //MARK: -Event
-    func createEvent(with _: EventCreate) async throws -> Event {
-        fatalError("Unimplemented createEvent")
+    func createEvent(with event: EventCreate) async throws -> Event {
+        let url = URL(string: "https://localhost:8080/events")!
+        
+        let request = try createPostRequest(url, with: event)
+        
+        let event: Event = try await performRequest(request)
+        return event
     }
 
-    func updateEvent(withId _: Event.ID, and _: EventUpdate) async throws -> Event {
-        fatalError("Unimplemented updateEvent")
+    func updateEvent(withId id: Event.ID, and event: EventUpdate) async throws -> Event {
+        let url = URL(string: "https://localhost:8080/events/\(id)")!
+        let request = try createPutRequest(url, with: event)
+        
+        let event: Event = try await performRequest(request)
+        return event
     }
 
-    func deleteEvent(withId _: Event.ID) async throws {
-        fatalError("Unimplemented deleteEvent")
+    func deleteEvent(withId id: Event.ID) async throws {
+        let url = URL(string: "https://localhost:8080/events/\(id)")!
+        let request = try createDeleteRequest(url)
+        
+        let _: String = try await performRequest(request)
     }
 
-    func createMedia(with _: MediaCreate) async throws -> Media {
-        fatalError("Unimplemented createMedia")
+    //MARK: -Media
+    func createMedia(with media: MediaCreate) async throws -> Media {
+        let url = URL(string: "https://localhost:8080/media")!
+        let request = try createPostRequest(url, with: media)
+        
+        let media: Media = try await performRequest(request)
+        return media
     }
 
-    func deleteMedia(withId _: Media.ID) async throws {
-        fatalError("Unimplemented deleteMedia")
+    func deleteMedia(withId id: Media.ID) async throws {
+        let url = URL(string: "https://localhost:8080/media/\(id)")!
+        let request = try createDeleteRequest(url)
+        
+        let _: String = try await performRequest(request)
     }
     
     //MARK: -Helpers
