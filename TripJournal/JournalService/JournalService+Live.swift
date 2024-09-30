@@ -11,7 +11,7 @@ enum JournalServiceError: Error {
 /// An unimplemented version of the `JournalService`.
 class JournalServiceImpl: JournalService {
     
-    private let localhost = "http://localhost:8080"
+    private let localhost = "http://localhost:8000"
     private let urlSession: URLSession
     @Published private var token: Token?
 
@@ -163,32 +163,45 @@ class JournalServiceImpl: JournalService {
     }
     
     private func createPostRequest<T: Encodable>(_ url: URL, with body: T) throws -> URLRequest {
-        var request = URLRequest(url: url)
+        var request = try createCommonRequest(url)
         request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let data = try JSONEncoder().encode(body)
         request.httpBody = data
+        request.debug()
         return request
     }
     
     private func createGetRequest(_ url: URL) throws -> URLRequest {
-        var request = URLRequest(url: url)
+        var request = try createCommonRequest(url)
         request.httpMethod = "GET"
+        request.debug()
         return request
     }
     
     private func createPutRequest<T: Encodable>(_ url: URL, with body: T) throws -> URLRequest {
-        var request = URLRequest(url: url)
+        var request = try createCommonRequest(url)
         request.httpMethod = "PUT"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let data = try JSONEncoder().encode(body)
         request.httpBody = data
+        request.debug()
         return request
     }
     
     private func createDeleteRequest(_ url: URL) throws -> URLRequest {
-        var request = URLRequest(url: url)
+        var request = try createCommonRequest(url)
         request.httpMethod = "DELETE"
+        request.debug()
+        return request
+    }
+    
+    private func createCommonRequest(_ url: URL) throws -> URLRequest {
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = [
+            "Content-Type": "application/json",
+        ]
+        if let accessToken = token?.accessToken {
+            request.allHTTPHeaderFields?["Authorization"] = "Bearer \(accessToken)"
+        }
         return request
     }
 }
