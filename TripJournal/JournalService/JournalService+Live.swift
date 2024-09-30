@@ -162,11 +162,20 @@ class JournalServiceImpl: JournalService {
             throw URLError(.badURL)
         }
         
-        if response.statusCode != 200 || data.isEmpty {
-            throw URLError(.badServerResponse)
+        switch response.statusCode {
+        case 200:
+            return try JSONDecoder().decode(T.self, from: data)
+        case 204:
+            if data.isEmpty {
+                guard let result = "" as? T else {
+                    throw URLError(.cannotDecodeRawData)
+                }
+                return result
+            }
+        default: break
         }
         
-        return try JSONDecoder().decode(T.self, from: data)
+        throw URLError(.badServerResponse)
     }
     
     private func createPostRequest<T: Encodable>(_ url: URL, with body: T) throws -> URLRequest {
