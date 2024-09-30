@@ -35,8 +35,8 @@ struct TripForm: View {
         case let .edit(trip):
             title = "Edit \(trip.name)"
             _name = .init(initialValue: trip.name)
-            _startDate = .init(initialValue: trip.startDate)
-            _endDate = .init(initialValue: trip.endDate)
+            _startDate = .init(initialValue: trip.startDate.convertToDate)
+            _endDate = .init(initialValue: trip.endDate.convertToDate)
         }
     }
 

@@ -51,3 +51,33 @@ extension Collection {
         return isEmpty ? nil : self
     }
 }
+
+extension Date {
+    var convertToCloudData: String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        return dateFormatter.string(from: self)
+    }
+}
+
+extension String {
+    var convertToDate: Date {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        
+        return dateFormatter.date(from: self) ?? Date()
+    }
+}
+
+extension URLRequest {
+    func debug() {
+        print("\(self.httpMethod!) \(self.url!)")
+        print("Headers:")
+        print(self.allHTTPHeaderFields!)
+        print("Body:")
+        print(String(data: self.httpBody ?? Data(), encoding: .utf8)!)
+    }
+}
