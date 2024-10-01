@@ -1,23 +1,36 @@
 import Combine
 import Foundation
 
-enum JournalServiceError: Error {
-    case invalidResponse
-    case invalidData
-    case invalidToken
-    case notFound
-}
-
-/// An unimplemented version of the `JournalService`.
 class JournalServiceImpl: JournalService {
     
     private let localhost = "http://localhost:8000"
     private let urlSession: URLSession
-    @Published private var token: Token?
+    @Published private var token: Token? {
+        didSet {
+            if let token = token {
+                try? KeychainHelper.shared.saveToken(token)
+            } else {
+                try? KeychainHelper.shared.deleteToken()
+            }
+        }
+    }
+    private let tripCacheManager = TripCacheManager()
+    @Published private var networkMonitor = NetworkMonitor()
 
     init() {
         let configuration = URLSessionConfiguration.default
         self.urlSession = URLSession(configuration: configuration)
+        
+        loadToken()
+    }
+    
+    //MARK: -Token
+    private func loadToken() {
+        if let savedToken = try? KeychainHelper.shared.getToken() {
+            self.token = savedToken
+        } else {
+            self.token = nil
+        }
     }
     
     var isAuthenticated: AnyPublisher<Bool, Never> {
@@ -79,16 +92,25 @@ class JournalServiceImpl: JournalService {
     }
     
     private func createTripRequest(trip: TripCreate) throws -> URLRequest {
-        let url = URL(string: "\(localhost)/trips")!
-        return try createPostRequest(url, with: trip)
+        return try createPostRequest(EndPoints.trips.url, with: trip)
     }
 
     func getTrips() async throws -> [Trip] {
-        let url = URL(string: "\(localhost)/trips")!
-        let request = try createGetRequest(url)
+        if !networkMonitor.isConnected {
+            print("Offline: Loading trips from UserDefaults")
+            return tripCacheManager.loadTrips()
+        }
         
-        let trips: [Trip] = try await performRequest(request)
-        return trips
+        let request = try createGetRequest(EndPoints.trips.url)
+        
+        do {
+            let trips: [Trip] = try await performRequest(request)
+            tripCacheManager.saveTrips(trips)
+            return trips
+        } catch {
+            print("Fetching trips failed, loading from UserDefaults")
+            return tripCacheManager.loadTrips()
+        }
     }
 
     func getTrip(withId id: Trip.ID) async throws -> Trip {
@@ -100,7 +122,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func updateTrip(withId id: Trip.ID, and trip: TripUpdate) async throws -> Trip {
-        let url = URL(string: "\(localhost)/trips/\(id)")!
+        let url = EndPoints.handleTrip(id).url
         let data = try JSONEncoder().encode(trip)
         let request = try createPutRequest(url, with: data)
         
@@ -109,7 +131,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func deleteTrip(withId id: Trip.ID) async throws {
-        let url = URL(string: "\(localhost)/trips/\(id)")!
+        let url = EndPoints.handleTrip(id).url
         let request = try createDeleteRequest(url)
         
         let _: String = try await performRequest(request)
@@ -117,7 +139,7 @@ class JournalServiceImpl: JournalService {
     
     //MARK: -Event
     func createEvent(with event: EventCreate) async throws -> Event {
-        let url = URL(string: "\(localhost)/events")!
+        let url = EndPoints.events.url
         
         let request = try createPostRequest(url, with: event)
         
@@ -126,7 +148,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func updateEvent(withId id: Event.ID, and event: EventUpdate) async throws -> Event {
-        let url = URL(string: "\(localhost)/events/\(id)")!
+        let url = EndPoints.handleEvent(id).url
         let request = try createPutRequest(url, with: event)
         
         let event: Event = try await performRequest(request)
@@ -134,7 +156,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func deleteEvent(withId id: Event.ID) async throws {
-        let url = URL(string: "\(localhost)/events/\(id)")!
+        let url = EndPoints.handleEvent(id).url
         let request = try createDeleteRequest(url)
         
         let _: String = try await performRequest(request)
@@ -142,7 +164,7 @@ class JournalServiceImpl: JournalService {
 
     //MARK: -Media
     func createMedia(with media: MediaCreate) async throws -> Media {
-        let url = URL(string: "\(localhost)/media")!
+        let url = EndPoints.media.url
         let request = try createPostRequest(url, with: media)
         
         let media: Media = try await performRequest(request)
@@ -150,7 +172,7 @@ class JournalServiceImpl: JournalService {
     }
 
     func deleteMedia(withId id: Media.ID) async throws {
-        let url = URL(string: "\(localhost)/media/\(id)")!
+        let url = EndPoints.handleMedia(id).url
         let request = try createDeleteRequest(url)
         
         let _: String = try await performRequest(request)

@@ -25,11 +25,14 @@
 		0767E7102B573F6300993870 /* LocationSearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0767E70F2B573F6300993870 /* LocationSearchView.swift */; };
 		07AA89D72B5F251800405269 /* Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07AA89D62B5F251800405269 /* Requests.swift */; };
 		07BCBA7A2B5B256500C6F687 /* MediaGallery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCBA792B5B256500C6F687 /* MediaGallery.swift */; };
-		07BCBA872B5D656E00C6F687 /* JournalService+Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCBA862B5D656E00C6F687 /* JournalService+Mock.swift */; };
 		07BCBA892B5D65AD00C6F687 /* JournalService+Live.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCBA882B5D65AD00C6F687 /* JournalService+Live.swift */; };
 		07BCBA8B2B5D65D200C6F687 /* JournalService+Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCBA8A2B5D65D200C6F687 /* JournalService+Environment.swift */; };
 		07BCBA8F2B5D7EC500C6F687 /* MediaCarousel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07BCBA8E2B5D7EC500C6F687 /* MediaCarousel.swift */; };
 		07F6695D2B589A1E002F8D18 /* AddButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F6695C2B589A1E002F8D18 /* AddButton.swift */; };
+		226A646A2CAC322000501522 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A64692CAC321C00501522 /* API.swift */; };
+		226A646F2CAC347800501522 /* TripCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A646D2CAC347800501522 /* TripCacheManager.swift */; };
+		226A64702CAC347800501522 /* KeychainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A646B2CAC347800501522 /* KeychainHelper.swift */; };
+		226A64712CAC347800501522 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 226A646C2CAC347800501522 /* NetworkMonitor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,11 +55,14 @@
 		0767E70F2B573F6300993870 /* LocationSearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationSearchView.swift; sourceTree = "<group>"; };
 		07AA89D62B5F251800405269 /* Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Requests.swift; sourceTree = "<group>"; };
 		07BCBA792B5B256500C6F687 /* MediaGallery.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaGallery.swift; sourceTree = "<group>"; };
-		07BCBA862B5D656E00C6F687 /* JournalService+Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JournalService+Mock.swift"; sourceTree = "<group>"; };
 		07BCBA882B5D65AD00C6F687 /* JournalService+Live.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JournalService+Live.swift"; sourceTree = "<group>"; };
 		07BCBA8A2B5D65D200C6F687 /* JournalService+Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "JournalService+Environment.swift"; sourceTree = "<group>"; };
 		07BCBA8E2B5D7EC500C6F687 /* MediaCarousel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaCarousel.swift; sourceTree = "<group>"; };
 		07F6695C2B589A1E002F8D18 /* AddButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddButton.swift; sourceTree = "<group>"; };
+		226A64692CAC321C00501522 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		226A646B2CAC347800501522 /* KeychainHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainHelper.swift; sourceTree = "<group>"; };
+		226A646C2CAC347800501522 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
+		226A646D2CAC347800501522 /* TripCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TripCacheManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +104,7 @@
 				07BCBA8D2B5D666E00C6F687 /* LocationPicker */,
 				07AA89D82B5F256800405269 /* Models */,
 				07AA89D22B5F241200405269 /* Trips */,
+				226A646E2CAC347800501522 /* Helpers */,
 				07AA89D32B5F242100405269 /* Utils */,
 			);
 			path = TripJournal;
@@ -154,9 +161,9 @@
 		07BCBA8C2B5D65ED00C6F687 /* JournalService */ = {
 			isa = PBXGroup;
 			children = (
+				226A64692CAC321C00501522 /* API.swift */,
 				0703FC732B4583B80084DD8A /* JournalService.swift */,
 				07BCBA8A2B5D65D200C6F687 /* JournalService+Environment.swift */,
-				07BCBA862B5D656E00C6F687 /* JournalService+Mock.swift */,
 				07BCBA882B5D65AD00C6F687 /* JournalService+Live.swift */,
 			);
 			path = JournalService;
@@ -170,6 +177,16 @@
 				0703FC792B493D5B0084DD8A /* LocationService.swift */,
 			);
 			path = LocationPicker;
+			sourceTree = "<group>";
+		};
+		226A646E2CAC347800501522 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				226A646B2CAC347800501522 /* KeychainHelper.swift */,
+				226A646C2CAC347800501522 /* NetworkMonitor.swift */,
+				226A646D2CAC347800501522 /* TripCacheManager.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -241,6 +258,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				226A646A2CAC322000501522 /* API.swift in Sources */,
 				07BCBA7A2B5B256500C6F687 /* MediaGallery.swift in Sources */,
 				0703FC7A2B493D5B0084DD8A /* LocationService.swift in Sources */,
 				0703FC722B457EF40084DD8A /* Models.swift in Sources */,
@@ -254,8 +272,10 @@
 				07BCBA892B5D65AD00C6F687 /* JournalService+Live.swift in Sources */,
 				075A90F12B4469C0009A1DCB /* RootView.swift in Sources */,
 				075A90F72B446A5C009A1DCB /* TripForm.swift in Sources */,
-				07BCBA872B5D656E00C6F687 /* JournalService+Mock.swift in Sources */,
 				0767E7102B573F6300993870 /* LocationSearchView.swift in Sources */,
+				226A646F2CAC347800501522 /* TripCacheManager.swift in Sources */,
+				226A64702CAC347800501522 /* KeychainHelper.swift in Sources */,
+				226A64712CAC347800501522 /* NetworkMonitor.swift in Sources */,
 				075A90FB2B446A80009A1DCB /* EventCell.swift in Sources */,
 				07BCBA8F2B5D7EC500C6F687 /* MediaCarousel.swift in Sources */,
 				07F6695D2B589A1E002F8D18 /* AddButton.swift in Sources */,
