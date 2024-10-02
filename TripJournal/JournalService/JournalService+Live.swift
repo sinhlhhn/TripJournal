@@ -202,7 +202,7 @@ class JournalServiceImpl: JournalService {
     
     private func createPostRequest<T: Encodable>(_ url: URL, with body: T) throws -> URLRequest {
         var request = try createCommonRequest(url)
-        request.httpMethod = "POST"
+        request.httpMethod = HTTPMethods.POST.rawValue
         let data = try JSONEncoder().encode(body)
         request.httpBody = data
         request.debug()
@@ -211,14 +211,14 @@ class JournalServiceImpl: JournalService {
     
     private func createGetRequest(_ url: URL) throws -> URLRequest {
         var request = try createCommonRequest(url)
-        request.httpMethod = "GET"
+        request.httpMethod = HTTPMethods.GET.rawValue
         request.debug()
         return request
     }
     
     private func createPutRequest<T: Encodable>(_ url: URL, with body: T) throws -> URLRequest {
         var request = try createCommonRequest(url)
-        request.httpMethod = "PUT"
+        request.httpMethod = HTTPMethods.PUT.rawValue
         let data = try JSONEncoder().encode(body)
         request.httpBody = data
         request.debug()
@@ -227,7 +227,7 @@ class JournalServiceImpl: JournalService {
     
     private func createDeleteRequest(_ url: URL) throws -> URLRequest {
         var request = try createCommonRequest(url)
-        request.httpMethod = "DELETE"
+        request.httpMethod = HTTPMethods.DELETE.rawValue
         request.debug()
         return request
     }
