@@ -123,8 +123,7 @@ class JournalServiceImpl: JournalService {
 
     func updateTrip(withId id: Trip.ID, and trip: TripUpdate) async throws -> Trip {
         let url = EndPoints.handleTrip(id).url
-        let data = try JSONEncoder().encode(trip)
-        let request = try createPutRequest(url, with: data)
+        let request = try createPutRequest(url, with: trip)
         
         let trip: Trip = try await performRequest(request)
         return trip
